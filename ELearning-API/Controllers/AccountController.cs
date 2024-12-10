@@ -1,4 +1,5 @@
 ﻿using ELearning_API.DTOs;
+using ELearning_API.Models;
 using ELearning_API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -57,7 +58,7 @@ namespace ELearning_API.Controllers
         public async Task<IActionResult> Register(RegisterDTO request)
         {
             // Check if email exist in database
-            IdentityUser existingUser = await _accountService.FindByEmailAsync(request.Email);
+            ApplicationUser existingUser = await _accountService.FindByEmailAsync(request.Email);
 
             if (existingUser != null)
             {
@@ -77,7 +78,7 @@ namespace ELearning_API.Controllers
 
         private async Task<string> GenerateJWT(string email)
         {
-            var identityUser = await _accountService.FindByEmailAsync(email);
+            ApplicationUser identityUser = await _accountService.FindByEmailAsync(email);
 
             var principal = await _accountService.CreateUserPrincipalAsync(identityUser);
 

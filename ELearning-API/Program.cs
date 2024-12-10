@@ -1,4 +1,5 @@
 using ELearning_API.Data;
+using ELearning_API.Models;
 using ELearning_API.Profiles;
 using ELearning_API.Services;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +24,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 // Add Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
     options.Password.RequireNonAlphanumeric = false;

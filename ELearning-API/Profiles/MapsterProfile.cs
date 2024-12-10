@@ -1,6 +1,6 @@
 ﻿using ELearning_API.DTOs;
+using ELearning_API.Models;
 using Mapster;
-using Microsoft.AspNetCore.Identity;
 
 namespace ELearning_API.Profiles
 {
@@ -8,7 +8,7 @@ namespace ELearning_API.Profiles
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<RegisterDTO, IdentityUser>()
+            config.NewConfig<RegisterDTO, ApplicationUser>()
                 .Map(dest => dest.UserName, src => src.Email);
         }
     }

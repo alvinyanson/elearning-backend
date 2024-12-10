@@ -1,4 +1,5 @@
 ﻿using ELearning_API.DTOs;
+using ELearning_API.Models;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -7,14 +8,14 @@ namespace ELearning_API.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public AccountService(
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<IdentityUser> signInManager
+            SignInManager<ApplicationUser> signInManager
             )
         {
             _userManager = userManager;
@@ -22,12 +23,12 @@ namespace ELearning_API.Services
             _signInManager = signInManager;
         }
 
-        public async Task<ClaimsPrincipal> CreateUserPrincipalAsync(IdentityUser identityUser)
+        public async Task<ClaimsPrincipal> CreateUserPrincipalAsync(ApplicationUser identityUser)
         {
             return await _signInManager.CreateUserPrincipalAsync(identityUser);
         }
 
-        public async Task<IdentityUser> FindByEmailAsync(string email)
+        public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
@@ -43,7 +44,7 @@ namespace ELearning_API.Services
 
         public async Task<IdentityResult> RegisterAsync(RegisterDTO request)
         {
-            var identityUser = request.Adapt<IdentityUser>();
+            ApplicationUser identityUser = request.Adapt<ApplicationUser>();
 
             var identityRole = new IdentityRole { Name = request.Role };
 

@@ -1,4 +1,5 @@
 ﻿using ELearning_API.DTOs;
+using ELearning_API.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -10,8 +11,8 @@ namespace ELearning_API.Services
 
         Task<IdentityResult> RegisterAsync(RegisterDTO request);
 
-        Task<IdentityUser> FindByEmailAsync(string email);
+        Task<ApplicationUser> FindByEmailAsync(string email);
 
-        Task<ClaimsPrincipal> CreateUserPrincipalAsync(IdentityUser identityUser);
+        Task<ClaimsPrincipal> CreateUserPrincipalAsync(ApplicationUser identityUser);
     }
 }
