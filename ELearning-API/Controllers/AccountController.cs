@@ -1,8 +1,8 @@
 ﻿using ELearning_API.DTOs;
 using ELearning_API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ELearning_API.Controllers
 {
@@ -10,11 +10,14 @@ namespace ELearning_API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
+        private readonly IJWTService _jwtService;
         private readonly IAccountService _accountService;
 
         public AccountController(
+            IJWTService jwtService,
             IAccountService accountService)
         {
+            _jwtService = jwtService;
             _accountService = accountService;
         }
 
@@ -25,7 +28,32 @@ namespace ELearning_API.Controllers
             return Ok("Test connection");
         }
 
-        [HttpPost]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO request)
+        {
+            var signInResult = await _accountService.LoginAsync(request);
+
+            if (!signInResult.Succeeded)
+            {
+                return Unauthorized(new { success = false, message = "Invalid email address or password!" });
+            }
+
+            try
+            {
+                // Generate JWT token
+                string jwt = await GenerateJWT(request.Email);
+
+                // Success logged in
+                return Ok(new { success = true, message = "User logged in successfully!", result = jwt });
+
+            }
+            catch
+            {
+                return StatusCode(500, new { success = false, message = $"Something went wrong!" });
+            }
+        }
+
+        [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO request)
         {
             // Check if email exist in database
@@ -45,6 +73,15 @@ namespace ELearning_API.Controllers
             }
 
             return Ok(new { success = true, message = "User registered successfully!" });
+        }
+
+        private async Task<string> GenerateJWT(string email)
+        {
+            var identityUser = await _accountService.FindByEmailAsync(email);
+
+            var principal = await _accountService.CreateUserPrincipalAsync(identityUser);
+
+            return _jwtService.GenerateJwtToken(principal.Claims);
         }
     }
 }

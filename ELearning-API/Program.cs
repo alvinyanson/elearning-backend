@@ -35,6 +35,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 
 // User Defined Services
+builder.Services.AddTransient<IJWTService, JWTService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 
 var app = builder.Build();
