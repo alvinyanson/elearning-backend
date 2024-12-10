@@ -1,4 +1,6 @@
 using ELearning_API.Data;
+using ELearning_API.Profiles;
+using ELearning_API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,6 +8,7 @@ using System;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.RegisterMapsterConfiguration();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,6 +32,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;
 }).AddEntityFrameworkStores<AppDbContext>();
+
+
+// User Defined Services
+builder.Services.AddTransient<IAccountService, AccountService>();
 
 var app = builder.Build();
 
