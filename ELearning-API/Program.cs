@@ -32,11 +32,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 6;
-}).AddEntityFrameworkStores<AppDbContext>();
+}).AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
 
 // User Defined Services
 builder.Services.AddTransient<IJWTService, JWTService>();
+builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 
 var app = builder.Build();

@@ -57,11 +57,15 @@ namespace ELearning_API.Services
                 if(roleResult.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(identityUser, request.Role);
-
                 }
             }
 
             return registerResult;
+        }
+
+        public IEnumerable<ApplicationUser> All()
+        {
+            return _userManager.Users.ToList();
         }
     }
 }

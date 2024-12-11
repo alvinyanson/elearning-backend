@@ -13,20 +13,16 @@ namespace ELearning_API.Controllers
     {
         private readonly IJWTService _jwtService;
         private readonly IAccountService _accountService;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public AccountController(
             IJWTService jwtService,
-            IAccountService accountService)
+            IAccountService accountService,
+            SignInManager<ApplicationUser> signInManager)
         {
             _jwtService = jwtService;
             _accountService = accountService;
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> TestConnection()
-        {
-            return Ok("Test connection");
+            _signInManager = signInManager;
         }
 
         [HttpPost("login")]
@@ -83,6 +79,13 @@ namespace ELearning_API.Controllers
             var principal = await _accountService.CreateUserPrincipalAsync(identityUser);
 
             return _jwtService.GenerateJwtToken(principal.Claims);
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok("Logged out successfully!");
         }
     }
 }
