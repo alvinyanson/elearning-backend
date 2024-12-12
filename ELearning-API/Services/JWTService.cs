@@ -1,4 +1,7 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿
+using ELearning_API.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -8,10 +11,12 @@ namespace ELearning_API.Services
     public class JWTService : IJWTService
     {
         private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public JWTService(IConfiguration configuration)
+        public JWTService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
+            _userManager = userManager;
         }
 
         public string GenerateJwtToken(IEnumerable<Claim> claims)
@@ -25,7 +30,7 @@ namespace ELearning_API.Services
                issuer: _configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("No issuer in application settings."),
                audience: _configuration["Jwt:Audience"] ?? throw new InvalidOperationException("No audience in application settings."),
                claims: claims,
-               expires: DateTime.UtcNow.AddHours(1),
+               expires: DateTime.UtcNow.AddMinutes(5),
                signingCredentials: credentials
                );
 

@@ -1,10 +1,15 @@
 using ELearning_API.Data;
+using ELearning_API.Data.Repositories;
+using ELearning_API.Data.Repositories.Interfaces;
 using ELearning_API.Models;
 using ELearning_API.Profiles;
 using ELearning_API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +28,26 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "https://localhost:7004",
+            ValidAudience = "https://localhost:7004",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("caffbb1d-f97d-41ac-84f7-8b257922b6cc"))
+        };
+    });
+
+
+
 // Add Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -39,6 +64,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 // User Defined Services
 builder.Services.AddTransient<IJWTService, JWTService>();
 builder.Services.AddTransient<IUsersService, UsersService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IAccountService, AccountService>();
 
 var app = builder.Build();
