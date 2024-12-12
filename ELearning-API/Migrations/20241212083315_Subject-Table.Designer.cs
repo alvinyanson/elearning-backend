@@ -4,6 +4,7 @@ using ELearning_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ELearning_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241212083315_Subject-Table")]
+    partial class SubjectTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,24 +120,6 @@ namespace ELearning_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b6e33a3a-8c3e-4ec1-b6bb-cb7c32cbdc99"),
-                            CreatedAt = new DateTime(2024, 12, 1, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Introduction to Programming",
-                            OwnerId = new Guid("81213a50-758e-4904-b715-640038ee9cd9"),
-                            UpdatedAt = new DateTime(2024, 12, 1, 10, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("c7437f78-4ed9-45b3-9a2b-b4672b2e8b42"),
-                            CreatedAt = new DateTime(2024, 12, 2, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Object-Oriented Programming",
-                            OwnerId = new Guid("81213a50-758e-4904-b715-640038ee9cd9"),
-                            UpdatedAt = new DateTime(2024, 12, 2, 10, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
