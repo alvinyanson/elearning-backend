@@ -30,23 +30,24 @@ namespace ELearning_API.Data.Repositories
             }
         }
 
-        public override async Task<bool> Add(Subject subject)
+        public override async Task<bool> Add(Subject request)
         {
-            await _dbSet.AddAsync(subject);
+            await _dbSet.AddAsync(request);
 
             return true;
         }
 
-        public override async Task<bool> Update(Subject subject)
+        public override async Task<bool> Update(Subject request)
         {
             try
             {
-                var result = await _dbSet.FirstOrDefaultAsync(x => x.Id == subject.Id);
+                Subject? subject = await _dbSet.FirstOrDefaultAsync(x => x.Id == request.Id);
 
-                if (result == null)
+                if (subject == null)
                     return false;
 
-                result.Name = subject.Name;
+                subject.Name = request.Name;
+                subject.IsPublished = request.IsPublished;
 
                 return true;
             }
