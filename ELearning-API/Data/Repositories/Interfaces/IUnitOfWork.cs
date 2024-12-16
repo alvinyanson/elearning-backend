@@ -4,6 +4,8 @@
     {
         IInstructorRepository Instructor { get; }
 
-        void Save();
+        ISubjectRepository Subject { get; }
+
+        Task<bool> CompleteAsync();
     }
 }

@@ -2,21 +2,32 @@
 
 namespace ELearning_API.Data.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly AppDbContext _context;
+
+        public IInstructorRepository Instructor { get; private set; }
+
+        public ISubjectRepository Subject { get; private set; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             Instructor = new InstructorRepository(_context);
+            Subject = new SubjectRepository(_context);
         }
 
-        public IInstructorRepository Instructor { get; private set; }
 
-        public void Save()
+        public async Task<bool> CompleteAsync()
         {
-            _context.SaveChanges();
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
     }
 }

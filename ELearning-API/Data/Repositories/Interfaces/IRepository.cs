@@ -4,8 +4,14 @@ namespace ELearning_API.Data.Repositories.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> GetAll();
+        Task<List<T>> All();
 
-        T Get(Expression<Func<T, bool>> filter);
+        Task<T?> GetById(Guid id);
+
+        Task<bool> Add(T entity);
+
+        Task<bool> Update(T entity);
+        
+        Task<bool> Delete(Guid id);
     }
 }

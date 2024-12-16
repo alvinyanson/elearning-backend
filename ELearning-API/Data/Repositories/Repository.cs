@@ -7,20 +7,37 @@ namespace ELearning_API.Data.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly AppDbContext _context;
-        internal DbSet<T> dbSet;
+        internal DbSet<T> _dbSet;
 
         public Repository(AppDbContext context)
         {
             _context = context;
-            dbSet = _context.Set<T>();
+            _dbSet = _context.Set<T>();
         }
 
-        public T Get(System.Linq.Expressions.Expression<Func<T, bool>> filter)
+        public virtual async Task<bool> Add(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetAll()
+        
+
+        public virtual Task<List<T>> All()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Task<bool> Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual async Task<T?> GetById(Guid id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        public virtual Task<bool> Update(T entity)
         {
             throw new NotImplementedException();
         }
