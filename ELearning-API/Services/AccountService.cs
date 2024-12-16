@@ -56,8 +56,8 @@ namespace ELearning_API.Services
 
                 if(roleResult.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(identityUser, request.Role);
                 }
+                    await _userManager.AddToRoleAsync(identityUser, request.Role);
             }
 
             return registerResult;
