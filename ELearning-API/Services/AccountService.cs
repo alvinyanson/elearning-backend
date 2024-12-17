@@ -1,5 +1,6 @@
 ﻿using ELearning_API.DTOs;
 using ELearning_API.Models;
+using ELearning_API.Models.Account;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -11,16 +12,19 @@ namespace ELearning_API.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IJWTService _jwtService;
 
         public AccountService(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            SignInManager<ApplicationUser> signInManager
+            SignInManager<ApplicationUser> signInManager,
+            IJWTService jwtService
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _jwtService = jwtService;
         }
 
         public async Task<ClaimsPrincipal> CreateUserPrincipalAsync(ApplicationUser identityUser)

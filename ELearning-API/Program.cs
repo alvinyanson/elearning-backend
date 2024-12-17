@@ -1,6 +1,7 @@
 using ELearning_API.Data;
 using ELearning_API.Data.Repositories;
 using ELearning_API.Data.Repositories.Interfaces;
+using ELearning_API.Extensions;
 using ELearning_API.Models;
 using ELearning_API.Profiles;
 using ELearning_API.Services;
@@ -47,6 +48,8 @@ builder.Services.AddTransient<IJWTService, JWTService>();
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IAccountService, AccountService>();
+
+builder.Services.AddAppConfiguration();
 
 var app = builder.Build();
 

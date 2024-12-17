@@ -1,13 +1,11 @@
 ﻿using ELearning_API.DTOs;
 using ELearning_API.Models;
+using ELearning_API.Models.Account;
 using ELearning_API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Options;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
 
 namespace ELearning_API.Controllers
@@ -20,17 +18,21 @@ namespace ELearning_API.Controllers
         private readonly IAccountService _accountService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly AppSettings _appSettings;
+
 
         public AccountController(
             IJWTService jwtService,
             IAccountService accountService,
             SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IOptions<AppSettings> appSettings)
         {
             _jwtService = jwtService;
             _accountService = accountService;
             _signInManager = signInManager;
             _userManager = userManager;
+            _appSettings = appSettings.Value;
         }
 
         [HttpPost("login")]
@@ -52,14 +54,15 @@ namespace ELearning_API.Controllers
 
             try
             {
-                // Generate JWT token
-                string jwt = await GenerateJWT(user);
-                string refreshToken = GenerateRefreshToken();
+                ApplicationUser identityUser = await _accountService.FindByEmailAsync(user.Email);
 
+                ClaimsPrincipal principal = await _accountService.CreateUserPrincipalAsync(identityUser);
 
+                AuthResponse authResponse = await _jwtService.GenerateTokens(identityUser, principal.Claims);
 
-                // Success logged in
-                return Ok(new { success = true, message = "User logged in successfully!", result = new { jwt, refreshToken } });
+                await _userManager.SetAuthenticationTokenAsync(user, _appSettings.AuthSettings.RefreshTokenProvider, _appSettings.AuthSettings.RefreshTokenPurpose, authResponse.RefreshToken.TokenString);
+
+                return Ok(new { success = true, message = "User logged in successfully!", result = authResponse });
 
             }
             catch
@@ -90,42 +93,23 @@ namespace ELearning_API.Controllers
             return Ok(new { success = true, message = "User registered successfully!" });
         }
 
-        private async Task<string> GenerateJWT(ApplicationUser user)
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken(string refreshToken)
         {
-            ApplicationUser identityUser = await _accountService.FindByEmailAsync(user.Email);
+            string email = User.FindFirst(ClaimTypes.Email)?.Value;
 
-            var principal = await _accountService.CreateUserPrincipalAsync(identityUser);
+            ApplicationUser user = await _userManager.FindByEmailAsync(email);
 
-            return _jwtService.GenerateJwtToken(principal.Claims);
-        }
+            var isValid = await _userManager.VerifyUserTokenAsync(user, _appSettings.AuthSettings.RefreshTokenProvider, _appSettings.AuthSettings.RefreshTokenPurpose, refreshToken);
 
-        private string GenerateRefreshToken()
-        {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
+            if (!isValid)
             {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
+                return BadRequest("Invalid refresh token!");
             }
-        }
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("caffbb1d-f97d-41ac-84f7-8b257922b6cc")),
-                ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
-            };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                throw new SecurityTokenException("Invalid token");
-            return principal;
+            ClaimsPrincipal principal = await _accountService.CreateUserPrincipalAsync(user);
+
+            return Ok(await _jwtService.GenerateTokens(user, principal.Claims));
         }
 
         [HttpPost("logout")]
