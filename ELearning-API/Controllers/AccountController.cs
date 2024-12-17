@@ -96,9 +96,9 @@ namespace ELearning_API.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken(string refreshToken)
         {
-            string email = User.FindFirst(ClaimTypes.Email)?.Value;
+            //string email = User.FindFirst(ClaimTypes.Email)?.Value;
 
-            ApplicationUser user = await _userManager.FindByEmailAsync(email);
+            ApplicationUser user = await _userManager.FindByEmailAsync("instructor4@elearning.com");
 
             var isValid = await _userManager.VerifyUserTokenAsync(user, _appSettings.AuthSettings.RefreshTokenProvider, _appSettings.AuthSettings.RefreshTokenPurpose, refreshToken);
 

@@ -37,7 +37,7 @@ namespace ELearning_API.Services
                issuer: _appSettings.AuthSettings.Issuer,
                audience: _appSettings.AuthSettings.Audience,
                claims: claims,
-               expires: DateTime.Now.AddMinutes(_appSettings.AuthSettings.AccessTokenExpiration),
+               expires: DateTime.UtcNow.AddMinutes(_appSettings.AuthSettings.AccessTokenExpiration),
                signingCredentials: credentials
                );
 
@@ -48,7 +48,7 @@ namespace ELearning_API.Services
             {
                 UserName = user.Email,
                 TokenString = refreshTokenstring,
-                ExpireAt = DateTime.Now.AddMinutes(_appSettings.AuthSettings.RefreshTokenExpiration)
+                ExpireAt = DateTime.UtcNow.AddMinutes(_appSettings.AuthSettings.RefreshTokenExpiration)
             };
 
 
