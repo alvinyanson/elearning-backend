@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Web;
 
 namespace ELearning_API.Services
 {
@@ -47,7 +48,7 @@ namespace ELearning_API.Services
             var refreshTokenDTO = new RefreshTokenDTO
             {
                 UserName = user.Email,
-                TokenString = refreshTokenstring,
+                TokenString = HttpUtility.UrlEncode(refreshTokenstring),
                 ExpireAt = DateTime.UtcNow.AddMinutes(_appSettings.AuthSettings.RefreshTokenExpiration)
             };
 
