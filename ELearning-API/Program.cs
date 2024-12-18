@@ -1,3 +1,4 @@
+using ELearning.Utility;
 using ELearning_API;
 using ELearning_API.Data;
 using ELearning_API.Data.Repositories;
@@ -9,6 +10,7 @@ using ELearning_API.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -78,6 +80,7 @@ builder.Services.AddTransient<IJWTService, JWTService>();
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 builder.Services.AddAppConfiguration();
 

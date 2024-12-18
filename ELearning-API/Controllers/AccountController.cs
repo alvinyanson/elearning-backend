@@ -3,9 +3,11 @@ using ELearning_API.Models;
 using ELearning_API.Models.Account;
 using ELearning_API.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 
 
 namespace ELearning_API.Controllers
@@ -18,6 +20,7 @@ namespace ELearning_API.Controllers
         private readonly IAccountService _accountService;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
         private readonly AppSettings _appSettings;
 
 
@@ -26,12 +29,14 @@ namespace ELearning_API.Controllers
             IAccountService accountService,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IEmailSender emailSender)
         {
             _jwtService = jwtService;
             _accountService = accountService;
             _signInManager = signInManager;
             _userManager = userManager;
+            _emailSender = emailSender;
             _appSettings = appSettings.Value;
         }
 
@@ -74,6 +79,11 @@ namespace ELearning_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO request)
         {
+
+            await _emailSender.SendEmailAsync(request.Email, "Confirm your email",
+                       $"Please confirm your account by");
+
+
             // Check if email exist
             ApplicationUser existingUser = await _accountService.FindByEmailAsync(request.Email);
             if (existingUser != null)
