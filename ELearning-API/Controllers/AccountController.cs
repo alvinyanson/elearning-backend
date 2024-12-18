@@ -5,8 +5,10 @@ using ELearning_API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Encodings.Web;
 
 
@@ -79,11 +81,6 @@ namespace ELearning_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO request)
         {
-
-            await _emailSender.SendEmailAsync(request.Email, "Confirm your email",
-                       $"Please confirm your account by");
-
-
             // Check if email exist
             ApplicationUser existingUser = await _accountService.FindByEmailAsync(request.Email);
             if (existingUser != null)
@@ -103,17 +100,43 @@ namespace ELearning_API.Controllers
             ApplicationUser user = await _accountService.FindByEmailAsync(request.Email);
             string emailConfirmationToken = await _accountService.GenerateEmailConfirmationTokenAsync(user);
 
+            var callbackUrl = Url.Action(
+                action: "ConfirmEmail",
+                controller: "Account",
+                values: new { area = "Identity", userId = user.Id, code = emailConfirmationToken },
+                protocol: Request.Scheme
+                );
+
+            await _emailSender.SendEmailAsync(request.Email, "Confirm your email",
+           $"Thanks for signing up to eLearning! Please activate your account by clicking the link below: <br/> <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Activate account</a>.");
+
             // Success response message
             string successResponseMessage = request.Role switch
             {
                 "Instructor" => GlobalConstants.SuccessResponseMessage.RegisterInstructor,
 
                 "Student" => GlobalConstants.SuccessResponseMessage.RegisterStudent,
-                
+
                 _ => GlobalConstants.SuccessResponseMessage.RegisterAdmin
             };
 
             return Ok(new { success = true, message = successResponseMessage, token = emailConfirmationToken });
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if(!result.Succeeded)
+            {
+                return BadRequest("Error confirming your email.");
+            }
+
+            return Ok("Thank you for confirming your email.");
         }
 
         [HttpPost("refresh-token")]
