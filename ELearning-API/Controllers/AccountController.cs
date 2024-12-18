@@ -1,4 +1,4 @@
-﻿using ELearning_API.DTOs;
+﻿using ELearning_API.DTOs.Auth;
 using ELearning_API.Models;
 using ELearning_API.Models.Account;
 using ELearning_API.Services;
@@ -74,7 +74,7 @@ namespace ELearning_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO request)
         {
-            // Check if email exist in database
+            // Check if email exist
             ApplicationUser existingUser = await _accountService.FindByEmailAsync(request.Email);
 
             if (existingUser != null)
@@ -82,7 +82,7 @@ namespace ELearning_API.Controllers
                 return Ok(new { success = false, message = $"The email {request.Email} is already registered!" });
             }
 
-            // Register user account
+            // Register account
             var registerResult = await _accountService.RegisterAsync(request);
 
             if (!registerResult.Succeeded)
@@ -90,7 +90,17 @@ namespace ELearning_API.Controllers
                 return BadRequest(new { success = false, message = registerResult.Errors.FirstOrDefault()?.Description });
             }
 
-            return Ok(new { success = true, message = "User registered successfully!" });
+            // Success response message
+            string successResponseMessage = request.Role switch
+            {
+                "Instructor" => GlobalConstants.SuccessResponseMessage.RegisterInstructor,
+
+                "Student" => GlobalConstants.SuccessResponseMessage.RegisterStudent,
+                
+                _ => GlobalConstants.SuccessResponseMessage.RegisterAdmin
+            };
+
+            return Ok(new { success = true, message = successResponseMessage });
         }
 
         [HttpPost("refresh-token")]

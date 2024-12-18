@@ -1,4 +1,4 @@
-﻿using ELearning_API.DTOs;
+﻿using ELearning_API.DTOs.Auth;
 using ELearning_API.Models;
 using ELearning_API.Models.Account;
 using Microsoft.AspNetCore.Identity;

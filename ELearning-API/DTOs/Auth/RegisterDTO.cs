@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ELearning_API.DTOs
+namespace ELearning_API.DTOs.Auth
 {
     public class RegisterDTO
     {
         [Required]
-        [DataType(DataType.EmailAddress)]
+        [RegularExpression(GlobalConstants.RegexPatterns.EmailPattern, ErrorMessage = "Invalid Email address")]
         public string Email { get; set; }
 
         [Required]
@@ -15,7 +15,6 @@ namespace ELearning_API.DTOs
         public string LastName { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Required]
