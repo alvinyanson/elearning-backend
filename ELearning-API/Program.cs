@@ -1,3 +1,4 @@
+using ELearning_API;
 using ELearning_API.Data;
 using ELearning_API.Data.Repositories;
 using ELearning_API.Data.Repositories.Interfaces;
@@ -44,10 +45,10 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = true,
             ValidateIssuerSigningKey = true,
             ValidateLifetime = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidIssuer = builder.Configuration["AppSettings:AuthSettings:Issuer"],
+            ValidAudience = builder.Configuration["AppSettings:AuthSettings:Audience"],
 
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:AuthSettings:SecretKey"]!)),
             ClockSkew = TimeSpan.Zero,
         };
     });
@@ -65,6 +66,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    int refreshTokenExpirationMinutes = int.Parse(builder.Configuration["AppSettings:AuthSettings:RefreshTokenExpiration"]!);
+    options.TokenLifespan = TimeSpan.FromMinutes(refreshTokenExpirationMinutes);
+});
 
 // User Defined Services
 builder.Services.AddTransient<IJWTService, JWTService>();
