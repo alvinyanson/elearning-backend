@@ -76,19 +76,22 @@ namespace ELearning_API.Controllers
         {
             // Check if email exist
             ApplicationUser existingUser = await _accountService.FindByEmailAsync(request.Email);
-
             if (existingUser != null)
             {
                 return Ok(new { success = false, message = $"The email {request.Email} is already registered!" });
             }
 
             // Register account
-            var registerResult = await _accountService.RegisterAsync(request);
-
+            IdentityResult registerResult = await _accountService.RegisterAsync(request);
             if (!registerResult.Succeeded)
             {
                 return BadRequest(new { success = false, message = registerResult.Errors.FirstOrDefault()?.Description });
             }
+
+
+            // Generate email token confirmation
+            ApplicationUser user = await _accountService.FindByEmailAsync(request.Email);
+            string emailConfirmationToken = await _accountService.GenerateEmailConfirmationTokenAsync(user);
 
             // Success response message
             string successResponseMessage = request.Role switch
@@ -100,7 +103,7 @@ namespace ELearning_API.Controllers
                 _ => GlobalConstants.SuccessResponseMessage.RegisterAdmin
             };
 
-            return Ok(new { success = true, message = successResponseMessage });
+            return Ok(new { success = true, message = successResponseMessage, token = emailConfirmationToken });
         }
 
         [HttpPost("refresh-token")]

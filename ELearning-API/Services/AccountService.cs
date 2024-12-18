@@ -3,7 +3,9 @@ using ELearning_API.Models;
 using ELearning_API.Models.Account;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Claims;
+using System.Text;
 
 namespace ELearning_API.Services
 {
@@ -54,14 +56,12 @@ namespace ELearning_API.Services
 
             IdentityResult registerResult = await _userManager.CreateAsync(identityUser, request.Password);
 
-            if(registerResult.Succeeded)
+            if (registerResult.Succeeded)
             {
-                IdentityResult roleResult =  await _roleManager.CreateAsync(new IdentityRole { Name = request.Role });
+                IdentityResult roleResult = await _roleManager.CreateAsync(new IdentityRole { Name = request.Role });
 
-                if(roleResult.Succeeded)
-                {
-                }
-                    await _userManager.AddToRoleAsync(identityUser, request.Role);
+                await _userManager.AddToRoleAsync(identityUser, request.Role);
+
             }
 
             return registerResult;
@@ -70,6 +70,17 @@ namespace ELearning_API.Services
         public IEnumerable<ApplicationUser> All()
         {
             return _userManager.Users.ToList();
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)
+        {
+            string userId = await _userManager.GetUserIdAsync(user);
+            
+            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            return code;
         }
     }
 }
