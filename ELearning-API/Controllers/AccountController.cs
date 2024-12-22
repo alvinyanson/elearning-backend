@@ -60,7 +60,7 @@ namespace ELearning_API.Controllers
                 return BadRequest(new { success = false, message = $"User with email {request.Email} was null!" });
             }
 
-            if(await _userManager.IsEmailConfirmedAsync(user))
+            if(!await _userManager.IsEmailConfirmedAsync(user))
             {
                 return BadRequest(new { success = false, message = $"The account associated with email {request.Email} is not yet confirmed. Please verify your account by checking your email." });
             }
@@ -188,6 +188,57 @@ namespace ELearning_API.Controllers
 
             return Ok("Email sent successfully!");
         }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                // Don't reveal that the user does not exist or is not confirmed
+                return Ok("Please check your email to reset your password.");
+            }
+
+            string code = await _accountService.GeneratePasswordResetTokenAsync(user);
+
+            var callbackUrl = Url.Action(
+                action: "ResetPassword",
+                controller: "Account",
+                values: new { area = "Identity", code },
+                protocol: Request.Scheme
+            );
+
+            await _emailSender.SendEmailAsync(
+                    email,
+                    "Reset Password",
+                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+
+            return Ok("Please check your email to reset your password.");
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDTO request, string code)
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return Ok("Your password has been reset.");
+            }
+
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            var result = await _userManager.ResetPasswordAsync(user, code, request.NewPassword);
+            if (result.Succeeded)
+            {
+                return Ok("Your password has been reset.");
+            }
+
+            return BadRequest("There was a problem resetting your password.");
+        }
+
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()

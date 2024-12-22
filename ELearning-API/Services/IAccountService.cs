@@ -17,5 +17,7 @@ namespace ELearning_API.Services
         Task<ClaimsPrincipal> CreateUserPrincipalAsync(ApplicationUser identityUser);
 
         Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
+
+        Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user);
     }
 }

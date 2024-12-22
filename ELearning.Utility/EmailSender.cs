@@ -13,10 +13,14 @@ namespace ELearning.Utility
     public class EmailSender : IEmailSender
     {
         public string SendGridSecret { get; set; }
+        public string AdminEmail { get; set; }
+        public string AppName { get; set; }
 
         public EmailSender(IConfiguration _config)
         {
             SendGridSecret = _config["SendGrid:SecretKey"];
+            AdminEmail = _config["AppSettings:AdminEmail"];
+            AppName = _config["AppSettings:AppName"];
         }
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
@@ -24,8 +28,8 @@ namespace ELearning.Utility
 
             var client = new SendGridClient(SendGridSecret);
 
-            var from = new EmailAddress("wesik19710@chosenx.com", "Admin Elearning");
-            var to = new EmailAddress(email, "Student User");
+            var from = new EmailAddress(AdminEmail, AppName);
+            var to = new EmailAddress(email, "Elearning User");
             var message = MailHelper.CreateSingleEmail(from, to, subject, "test content", htmlMessage);
 
             var response = await client.SendEmailAsync(message).ConfigureAwait(false);

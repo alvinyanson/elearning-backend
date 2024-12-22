@@ -74,10 +74,17 @@ namespace ELearning_API.Services
 
         public async Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user)
         {
-            string userId = await _userManager.GetUserIdAsync(user);
-            
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            return code;
+        }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user)
+        {
+            string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
             return code;
