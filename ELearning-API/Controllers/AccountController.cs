@@ -60,6 +60,11 @@ namespace ELearning_API.Controllers
                 return BadRequest(new { success = false, message = $"User with email {request.Email} was null!" });
             }
 
+            if(!user.EmailConfirmed)
+            {
+                return BadRequest(new { success = false, message = $"The account associated with email {request.Email} is not yet confirmed. Please verify your account by checking your email." });
+            }
+
             try
             {
                 ApplicationUser identityUser = await _accountService.FindByEmailAsync(user.Email);
