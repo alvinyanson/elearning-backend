@@ -50,7 +50,7 @@ namespace ELearning_API.Controllers
 
             if (!signInResult.Succeeded)
             {
-                return Unauthorized(new { success = false, message = "Invalid email address or password!" });
+                return Unauthorized(new { success = false, message = "Invalid credentials." });
             }
 
             ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
