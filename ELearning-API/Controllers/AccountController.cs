@@ -1,4 +1,5 @@
-﻿using ELearning_API.DTOs.Auth;
+﻿using Azure.Core;
+using ELearning_API.DTOs.Auth;
 using ELearning_API.Models;
 using ELearning_API.Models.Account;
 using ELearning_API.Services;
@@ -156,6 +157,31 @@ namespace ELearning_API.Controllers
             ClaimsPrincipal principal = await _accountService.CreateUserPrincipalAsync(user);
 
             return Ok(await _jwtService.GenerateTokens(user, principal.Claims));
+        }
+
+        [HttpPost("resend-email-confirmation")]
+        public async Task<IActionResult> ResendEmailConfirmation(string email)
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(email);
+
+            if(user == null)
+            {
+                return BadRequest($"The user with email {email} does not exist!");
+            }
+
+            string emailConfirmationToken = await _accountService.GenerateEmailConfirmationTokenAsync(user);
+
+            var callbackUrl = Url.Action(
+                action: "ConfirmEmail",
+                controller: "Account",
+                values: new { area = "Identity", userId = user.Id, code = emailConfirmationToken },
+                protocol: Request.Scheme
+            );
+
+            await _emailSender.SendEmailAsync(user.Email, "Confirm your email",
+           $"Thanks for signing up to eLearning! Please activate your account by clicking the link below: <br/> <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Activate account</a>.");
+
+            return Ok("Email sent successfully!");
         }
 
         [HttpPost("logout")]
