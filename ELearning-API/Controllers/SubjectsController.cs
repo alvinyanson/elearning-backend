@@ -1,6 +1,7 @@
 ﻿using ELearning_API.Data.Repositories.Interfaces;
 using ELearning_API.DTOs.Subject;
 using ELearning_API.Models;
+using ELearning_API.Models.Base;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ namespace ELearning_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class SubjectsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -21,14 +22,28 @@ namespace ELearning_API.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> Get()
+        //{
+        //    List<Subject> subjects = await _unitOfWork.Subject.All();
+
+        //    List<GetSubjectDTO> subjectsDTO = subjects.Adapt<List<GetSubjectDTO>>();
+
+        //    return Ok(subjectsDTO);
+        //}
+
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get(PaginatedRequest request)
         {
-            List<Subject> subjects = await _unitOfWork.Subject.All();
+            PaginatedResult<GetSubjectDTO> result = _unitOfWork.Subject.GetPaginated(
+               request.PageNumber,
+               PaginatedRequest.ITEMS_PER_PAGE,
+               subjects => subjects.Name.Contains(request.SearchKeyword ?? string.Empty)
+               );
 
-            List<GetSubjectDTO> subjectsDTO = subjects.Adapt<List<GetSubjectDTO>>();
+            result.SearchKeyword = request.SearchKeyword;
 
-            return Ok(subjectsDTO);
+            return Ok(result);
         }
 
         [HttpGet]

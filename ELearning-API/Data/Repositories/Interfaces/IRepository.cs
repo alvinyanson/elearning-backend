@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using ELearning_API.Models.Base;
+using ELearning_API.Models;
+using System.Linq.Expressions;
 
 namespace ELearning_API.Data.Repositories.Interfaces
 {
@@ -13,5 +15,6 @@ namespace ELearning_API.Data.Repositories.Interfaces
         Task<bool> Update(T entity);
         
         Task<bool> Delete(Guid id);
+
     }
 }

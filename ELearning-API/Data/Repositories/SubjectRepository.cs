@@ -1,7 +1,11 @@
 ﻿using ELearning_API.Data.Repositories.Interfaces;
+using ELearning_API.DTOs.Subject;
 using ELearning_API.Models;
+using ELearning_API.Models.Base;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace ELearning_API.Data.Repositories
 {
@@ -69,6 +73,26 @@ namespace ELearning_API.Data.Repositories
             _dbSet.Remove(subject);
 
             return true;
+        }
+
+        public PaginatedResult<GetSubjectDTO> GetPaginated(int page, int pageSize, Expression<Func<Subject, bool>> condition)
+        {
+            int count = _context.Subjects.Where(condition).Count();
+            List<Subject> records = _context.Subjects.Where(condition)
+                .OrderBy(x => x.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+
+            List<GetSubjectDTO> subjectsDTO = records.Adapt<List<GetSubjectDTO>>();
+
+            return new PaginatedResult<GetSubjectDTO>
+            {
+                Result = subjectsDTO,
+                Page = page,
+                PageCount = (int)Math.Ceiling(count / (double)pageSize)
+            };
         }
     }
 }
