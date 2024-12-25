@@ -212,7 +212,7 @@ namespace ELearning_API.Controllers
             await _emailSender.SendEmailAsync(
                     email,
                     "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    $"Hi {user.FirstName}, <br/> You recently requested to reset your password for your eLearning account. \n Click the link below to reset your password. <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Reset password</a>. \n Thanks, \n eLearning Portal");
 
 
             return Ok("Please check your email to reset your password.");
