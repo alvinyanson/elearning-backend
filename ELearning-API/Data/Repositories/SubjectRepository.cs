@@ -21,7 +21,7 @@ namespace ELearning_API.Data.Repositories
                 return await _dbSet
                     .AsNoTracking()
                     .AsSplitQuery()
-                    .OrderBy(x => x.CreatedAt)
+                    .OrderBy(x => x.Name)
                     .ToListAsync();
             }
             catch (Exception ex)
