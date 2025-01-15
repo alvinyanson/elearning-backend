@@ -38,7 +38,8 @@ namespace ELearning_API.Controllers
             PaginatedResult<GetSubjectDTO> result = _unitOfWork.Subject.GetPaginated(
                request.PageNumber,
                PaginatedRequest.ITEMS_PER_PAGE,
-               subjects => subjects.Name.Contains(request.SearchKeyword ?? string.Empty)
+               subjects => subjects.Name.Contains(request.SearchKeyword ?? string.Empty) &&
+               (!request.IsPublished.HasValue || subjects.IsPublished == request.IsPublished)
                );
 
             result.SearchKeyword = request.SearchKeyword;

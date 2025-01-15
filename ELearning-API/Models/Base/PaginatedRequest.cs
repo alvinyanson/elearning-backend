@@ -11,5 +11,8 @@ namespace ELearning_API.Models.Base
 
         [FromQuery(Name = "search")]
         public string? SearchKeyword { get; set; }
+
+        [FromQuery(Name = "published")]
+        public bool? IsPublished { get; set; }
     }
 }

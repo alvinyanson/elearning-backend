@@ -97,7 +97,7 @@ namespace ELearning_API.Data.Repositories
 
         public async Task<Subject> GetByName(string name)
         {
-            var subject = await _context.Subjects.FirstOrDefaultAsync(x => x.Name == name);
+            var subject = await _context.Subjects.FirstOrDefaultAsync(x => x.Name.ToUpper() == name.ToUpper());
 
             if(subject == null) {
                 return null;
