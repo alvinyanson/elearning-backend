@@ -94,5 +94,16 @@ namespace ELearning_API.Data.Repositories
                 PageCount = (int)Math.Ceiling(count / (double)pageSize)
             };
         }
+
+        public async Task<Subject> GetByName(string name)
+        {
+            var subject = await _context.Subjects.FirstOrDefaultAsync(x => x.Name == name);
+
+            if(subject == null) {
+                return null;
+            }
+
+            return subject;
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace ELearning_API.Data.Repositories.Interfaces
     public interface ISubjectRepository : IRepository<Subject>
     {
         PaginatedResult<GetSubjectDTO> GetPaginated(int page, int pageSize, Expression<Func<Subject, bool>> condition);
+
+        Task<Subject> GetByName(string name);
     }
 }

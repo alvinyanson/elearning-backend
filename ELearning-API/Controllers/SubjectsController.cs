@@ -66,6 +66,11 @@ namespace ELearning_API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
+            bool isExisting = await _unitOfWork.Subject.GetByName(request.Name) != null;
+
+            if(isExisting)
+                return BadRequest("Subject already exists!");
+
             Subject subject = request.Adapt<Subject>();
 
             await _unitOfWork.Subject.Add(subject);
