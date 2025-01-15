@@ -43,6 +43,7 @@ namespace ELearning_API.Data
         }
 
         public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
         public override int SaveChanges()
         {
