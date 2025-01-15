@@ -39,7 +39,26 @@ namespace ELearning_API.Data
                 new() { Id = new Guid("972c9cb1-86ad-4a03-96ec-687dff0c8173"), Name = "Cybersecurity Basics", OwnerId = new Guid("81213a50-758e-4904-b715-640038ee9cd9"), CreatedAt = new DateTime(2024, 12, 21, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 21, 10, 0, 0) },
                 ];
 
+
+            Course[] seedCourses =
+                {
+                    new Course {Id = new Guid("01403752-9f62-4639-a411-109f4a098324"), Title = "Angular", Icon = "angular", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 12, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 12, 10, 0, 0) },
+                    new Course {Id = new Guid("11403752-9f62-4639-a411-109f4a098324"), Title = "React", Icon = "react", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 13, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 13, 10, 0, 0) },
+                    new Course {Id = new Guid("21403752-9f62-4639-a411-109f4a098324"), Title = "Vue.js", Icon = "vue", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 14, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 14, 10, 0, 0) },
+                    new Course {Id = new Guid("31403752-9f62-4639-a411-109f4a098324"), Title = "Node.js", Icon = "nodejs", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 15, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 15, 10, 0, 0) },
+                    new Course {Id = new Guid("41403752-9f62-4639-a411-109f4a098324"), Title = "Python", Icon = "python", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 16, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 16, 10, 0, 0) },
+                    new Course {Id = new Guid("51403752-9f62-4639-a411-109f4a098324"), Title = "C#", Icon = "csharp", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 17, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 17, 10, 0, 0) },
+                    new Course {Id = new Guid("61403752-9f62-4639-a411-109f4a098324"), Title = "Java", Icon = "java", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 18, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 18, 10, 0, 0) },
+                    new Course {Id = new Guid("71403752-9f62-4639-a411-109f4a098324"), Title = "Kotlin", Icon = "kotlin", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 19, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 19, 10, 0, 0) },
+                    new Course {Id = new Guid("81403752-9f62-4639-a411-109f4a098324"), Title = "PHP", Icon = "php", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 20, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 20, 10, 0, 0) },
+                    new Course {Id = new Guid("91403752-9f62-4639-a411-109f4a098324"), Title = "Ruby", Icon = "ruby", IsPublised = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d", CreatedAt = new DateTime(2024, 12, 21, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 21, 10, 0, 0) }
+                };
+
+
+
             builder.Entity<Subject>().HasData(seedSubjects);
+            builder.Entity<Course>().HasData(seedCourses);
+
         }
 
         public DbSet<Subject> Subjects { get; set; }
