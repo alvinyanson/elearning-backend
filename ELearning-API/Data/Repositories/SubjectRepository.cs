@@ -4,7 +4,6 @@ using ELearning_API.Models;
 using ELearning_API.Models.Base;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace ELearning_API.Data.Repositories

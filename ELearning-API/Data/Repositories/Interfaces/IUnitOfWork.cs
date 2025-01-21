@@ -6,6 +6,8 @@
 
         ISubjectRepository Subject { get; }
 
+        ICourseRepository Course { get; }
+
         Task<bool> CompleteAsync();
     }
 }

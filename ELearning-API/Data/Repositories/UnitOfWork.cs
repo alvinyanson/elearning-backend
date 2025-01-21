@@ -10,11 +10,14 @@ namespace ELearning_API.Data.Repositories
 
         public ISubjectRepository Subject { get; private set; }
 
+        public ICourseRepository Course { get; private set; }
+
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             Instructor = new InstructorRepository(_context);
             Subject = new SubjectRepository(_context);
+            Course = new CourseRepository(_context);
         }
 
 
