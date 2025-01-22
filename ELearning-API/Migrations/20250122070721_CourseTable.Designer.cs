@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ELearning_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250115073251_SeedCoursesTable")]
-    partial class SeedCoursesTable
+    [Migration("20250122070721_CourseTable")]
+    partial class CourseTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,12 +120,18 @@ namespace ELearning_API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
+
                     b.Property<string>("Icon")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsPublised")
+                    b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
+
+                    b.Property<int>("ModuleCount")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("SubjectId")
                         .HasColumnType("uniqueidentifier");
@@ -149,10 +155,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("01403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 12, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "angular",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "Angular",
                             UpdatedAt = new DateTime(2024, 12, 12, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -160,10 +168,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("11403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 13, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "react",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "React",
                             UpdatedAt = new DateTime(2024, 12, 13, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -171,10 +181,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("21403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 14, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "vue",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "Vue.js",
                             UpdatedAt = new DateTime(2024, 12, 14, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -182,10 +194,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("31403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 15, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "nodejs",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "Node.js",
                             UpdatedAt = new DateTime(2024, 12, 15, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -193,10 +207,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("41403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 16, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "python",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "Python",
                             UpdatedAt = new DateTime(2024, 12, 16, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -204,10 +220,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("51403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 17, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "csharp",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "C#",
                             UpdatedAt = new DateTime(2024, 12, 17, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -215,10 +233,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("61403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 18, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "java",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "Java",
                             UpdatedAt = new DateTime(2024, 12, 18, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -226,10 +246,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("71403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 19, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "kotlin",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "Kotlin",
                             UpdatedAt = new DateTime(2024, 12, 19, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -237,10 +259,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("81403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 20, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "php",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "PHP",
                             UpdatedAt = new DateTime(2024, 12, 20, 10, 0, 0, 0, DateTimeKind.Unspecified)
@@ -248,10 +272,12 @@ namespace ELearning_API.Migrations
                         new
                         {
                             Id = new Guid("91403752-9f62-4639-a411-109f4a098324"),
-                            AuthorId = "548241c1-f11a-4323-abc4-9f83f83c8d9d",
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CreatedAt = new DateTime(2024, 12, 21, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 0, 0, 0, 0),
                             Icon = "ruby",
-                            IsPublised = false,
+                            IsPublished = false,
+                            ModuleCount = 0,
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "Ruby",
                             UpdatedAt = new DateTime(2024, 12, 21, 10, 0, 0, 0, DateTimeKind.Unspecified)

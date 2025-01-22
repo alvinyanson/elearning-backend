@@ -6,18 +6,22 @@ namespace ELearning_API.Models
     {
         public string Title { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
-        public bool IsPublised { get; set; }
+        public bool IsPublished { get; set; }
+
+        public TimeSpan Duration { get; set; }
+
+        public int ModuleCount { get; set; }
 
         [ForeignKey("Subject")]
         public Guid SubjectId { get; set; }
 
         // Navigation property
-        public Subject Subject { get; set; }
+        public virtual Subject Subject { get; set; }
 
         [ForeignKey("ApplicationUser")]
         public string AuthorId { get; set; }
 
         // Navigation property
-        public ApplicationUser Author { get; set; }
+        public virtual ApplicationUser Author { get; set; }
     }
 }

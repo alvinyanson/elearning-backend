@@ -4,6 +4,7 @@ using ELearning_API.DTOs.Subject;
 using ELearning_API.Models;
 using ELearning_API.Models.Base;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace ELearning_API.Data.Repositories
@@ -21,6 +22,8 @@ namespace ELearning_API.Data.Repositories
         {
             int count = _context.Courses.Where(condition).Count();
             List<Course> records = _context.Courses.Where(condition)
+                .Include("Subject")
+                .Include("Author")
                 .OrderBy(x => x.Title)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
