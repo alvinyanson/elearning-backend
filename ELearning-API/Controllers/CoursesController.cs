@@ -1,5 +1,6 @@
 ﻿using ELearning_API.Data.Repositories.Interfaces;
 using ELearning_API.DTOs.Course;
+using ELearning_API.Filters;
 using ELearning_API.Models;
 using ELearning_API.Models.Base;
 using Mapster;
@@ -10,6 +11,7 @@ namespace ELearning_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [LogActionFilter]
     public class CoursesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +22,7 @@ namespace ELearning_API.Controllers
             _unitOfWork = unitOfWork;
             _logger = logger;
 
-            _logger.LogDebug(1, "NLog injected into CoursesController");
+            //_logger.LogDebug(1, "NLog injected into CoursesController");
         }
 
 
@@ -36,7 +38,7 @@ namespace ELearning_API.Controllers
 
             result.SearchKeyword = request.SearchKeyword;
 
-            _logger.LogWarning("Hello, this is the GET!");
+            //_logger.LogWarning("Hello, this is the GET!");
 
             return Ok(result);
         }
