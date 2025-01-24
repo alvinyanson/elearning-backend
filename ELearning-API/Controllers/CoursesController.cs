@@ -13,10 +13,14 @@ namespace ELearning_API.Controllers
     public class CoursesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<CoursesController> _logger;
 
-        public CoursesController(IUnitOfWork unitOfWork)
+        public CoursesController(IUnitOfWork unitOfWork, ILogger<CoursesController> logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
+
+            _logger.LogDebug(1, "NLog injected into CoursesController");
         }
 
 
@@ -31,6 +35,8 @@ namespace ELearning_API.Controllers
                 );
 
             result.SearchKeyword = request.SearchKeyword;
+
+            _logger.LogWarning("Hello, this is the GET!");
 
             return Ok(result);
         }
