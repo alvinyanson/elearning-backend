@@ -12,6 +12,7 @@ namespace ELearning_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [LogActionFilter]
+    [ServiceFilter(typeof(CustomExceptionFilter))]
     public class CoursesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

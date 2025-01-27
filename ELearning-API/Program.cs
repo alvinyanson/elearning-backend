@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using NLog;
 using NLog.Extensions.Logging;
+using ELearning_API.Filters;
 
 var logger = LogManager.GetCurrentClassLogger();
 
@@ -88,6 +89,7 @@ try
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     builder.Services.AddTransient<IAccountService, AccountService>();
     builder.Services.AddScoped<IEmailSender, EmailSender>();
+    builder.Services.AddScoped<CustomExceptionFilter>();
 
     builder.Services.AddAppConfiguration();
 
