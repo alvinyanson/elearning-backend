@@ -55,9 +55,9 @@ namespace ELearning_API.Data.Repositories
             return true;
         }
 
-        public async Task<Course> GetByName(string name)
+        public async Task<Course?> GetByName(string name)
         {
-            Course course = await _context.Courses.FirstOrDefaultAsync(x => x.Title.ToUpper() == name.ToUpper());
+            Course? course = await _context.Courses.FirstOrDefaultAsync(x => x.Title.ToUpper() == name.ToUpper());
 
             if (course == null)
                 return null;
@@ -69,9 +69,9 @@ namespace ELearning_API.Data.Repositories
         {
             int count = _context.Courses.Where(condition).Count();
             List<Course> records = _context.Courses.Where(condition)
-                .Include("Subject")
-                .Include("Author")
-                .OrderBy(x => x.Title)
+                .Include(c => c.Subject)
+                .Include(c => c.Author)
+                .OrderBy(c => c.Title)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
@@ -85,6 +85,19 @@ namespace ELearning_API.Data.Repositories
                 Page = page,
                 PageCount = (int)Math.Ceiling(count / (double)pageSize)
             };
+        }
+
+        public override async Task<Course?> GetById(Guid id)
+        {
+            Course? course = await _context.Courses
+                .Include(c => c.Subject)
+                .Include(c => c.Author)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (course == null)
+                return null;
+
+            return course;
         }
     }
 }

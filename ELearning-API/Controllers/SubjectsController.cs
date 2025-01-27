@@ -12,7 +12,7 @@ namespace ELearning_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     public class SubjectsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -56,7 +56,7 @@ namespace ELearning_API.Controllers
             if (subject == null)
                 return NotFound();
 
-            GetSubjectDTO subjectDTO = subject.Adapt<GetSubjectDTO>();
+            GetSubjectWithCourseDTO subjectDTO = subject.Adapt<GetSubjectWithCourseDTO>();
 
             return Ok(subjectDTO);
         }

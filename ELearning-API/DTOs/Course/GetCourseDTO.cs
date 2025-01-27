@@ -5,21 +5,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ELearning_API.DTOs.Course
 {
-    public class GetCourseDTO
+    public class GetCourseDTO : BaseCourseDTO
     {
-        public Guid Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Icon { get; set; } = string.Empty;
-        public bool IsPublished { get; set; }
-
-        public TimeSpan Duration { get; set; }
-
-        public int ModuleCount { get; set; }
-
         [ValidateNever]
-        public virtual GetSubjectDTO Subject { get; set; }
-
-        [ValidateNever]
-        public virtual GetInstructorDTO Author { get; set; }
+        public virtual BaseSubjectDTO Subject { get; set; }
     }
 }

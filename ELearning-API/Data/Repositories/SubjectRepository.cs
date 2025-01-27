@@ -104,5 +104,18 @@ namespace ELearning_API.Data.Repositories
 
             return subject;
         }
+
+        public override async Task<Subject?> GetById(Guid id)
+        {
+            Subject? subject = await _context.Subjects
+                .Include(s => s.Courses)
+                .ThenInclude(c => c.Author)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (subject == null)
+                return null;
+
+            return subject;
+        }
     }
 }

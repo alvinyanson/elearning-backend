@@ -1,11 +1,10 @@
-﻿namespace ELearning_API.Models
+﻿namespace ELearning_API.DTOs.Subject
 {
-    public class Subject : BaseEntity
+    public class BaseSubjectDTO
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public Guid OwnerId { get; set; }
         public bool IsPublished { get; set; }
-
-        public List<Course> Courses { get; set; }
     }
 }
