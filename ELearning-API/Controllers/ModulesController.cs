@@ -1,0 +1,38 @@
+﻿using Azure.Core;
+using ELearning_API.Data.Repositories.Interfaces;
+using ELearning_API.DTOs.Course;
+using ELearning_API.DTOs.Module;
+using ELearning_API.Models.Base;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ELearning_API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ModulesController : ControllerBase
+    {
+        private readonly IUnitOfWork _unitOfWork;
+
+        public ModulesController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Get(PaginatedRequest request)
+        {
+            PaginatedResult<GetModuleDTO> result = _unitOfWork.Module.GetPaginated(
+            request.PageNumber,
+            PaginatedRequest.ITEMS_PER_PAGE,
+            course => course.Title.Contains(request.SearchKeyword ?? string.Empty) &&
+            (!request.IsPublished.HasValue || course.IsPublished == request.IsPublished)
+                );
+
+            result.SearchKeyword = request.SearchKeyword;
+
+            return Ok(result);
+        }
+    }
+}

@@ -8,6 +8,8 @@
 
         ICourseRepository Course { get; }
 
+        IModuleRepository Module { get; }
+
         Task<bool> CompleteAsync();
     }
 }

@@ -14,5 +14,8 @@ namespace ELearning_API.Models
 
         // navigation property
         public virtual Course Course { get; set; }
+
+        public virtual ApplicationUser Author { get; set; }
+
     }
 }

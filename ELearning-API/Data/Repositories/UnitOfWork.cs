@@ -12,25 +12,28 @@ namespace ELearning_API.Data.Repositories
 
         public ICourseRepository Course { get; private set; }
 
+        public IModuleRepository Module  { get; private set; }
+
         public UnitOfWork(AppDbContext context)
-        {
-            _context = context;
-            Instructor = new InstructorRepository(_context);
-            Subject = new SubjectRepository(_context);
-            Course = new CourseRepository(_context);
-        }
+            {
+                _context = context;
+                Instructor = new InstructorRepository(_context);
+                Subject = new SubjectRepository(_context);
+                Course = new CourseRepository(_context);
+                Module = new ModuleRepository(_context);
+            }
 
 
-        public async Task<bool> CompleteAsync()
-        {
-            var result = await _context.SaveChangesAsync();
+            public async Task<bool> CompleteAsync()
+            {
+                var result = await _context.SaveChangesAsync();
 
-            return result > 0;
-        }
+                return result > 0;
+            }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
+            public void Dispose()
+            {
+                _context.Dispose();
+            }
     }
 }
