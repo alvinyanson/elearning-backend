@@ -34,7 +34,8 @@ namespace ELearning_API.Controllers
                 request.PageNumber,
                 PaginatedRequest.ITEMS_PER_PAGE,
                 course => course.Title.Contains(request.SearchKeyword ?? string.Empty) &&
-                (!request.IsPublished.HasValue || course.IsPublished == request.IsPublished)
+                (!request.IsPublished.HasValue || course.IsPublished == request.IsPublished) || 
+                course.Subject.Name.Contains(request.SearchKeyword ?? string.Empty)
                 );
 
             result.SearchKeyword = request.SearchKeyword;
