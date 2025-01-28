@@ -55,14 +55,60 @@ namespace ELearning_API.Data
                 };
 
 
+            Module[] seedModules =
+                {
+                    new Module
+                    {
+                        Title = "Introduction to Programming",
+                        Duration = TimeSpan.FromHours(2),
+                        IsPublished = true,
+                        AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                        CourseId = new Guid("01403752-9F62-4639-A411-109F4A098324")
+                    },
+                    new Module
+                    {
+                        Title = "Advanced C# Techniques",
+                        Duration = TimeSpan.FromHours(3.5),
+                        IsPublished = false,
+                        AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                        CourseId = new Guid("01403752-9F62-4639-A411-109F4A098324")
+                    },
+                    new Module
+                    {
+                        Title = "Database Design Principles",
+                        Duration = TimeSpan.FromHours(2.5),
+                        IsPublished = true,
+                        AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                        CourseId = new Guid("01403752-9F62-4639-A411-109F4A098324")
+                    },
+                    new Module
+                    {
+                        Title = "Web Development Basics",
+                        Duration = TimeSpan.FromHours(1.5),
+                        IsPublished = false,
+                        AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                        CourseId = new Guid("01403752-9F62-4639-A411-109F4A098324")
+                    },
+                    new Module
+                    {
+                        Title = "Machine Learning Essentials",
+                        Duration = TimeSpan.FromHours(4),
+                        IsPublished = true,
+                        AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                        CourseId = new Guid("01403752-9F62-4639-A411-109F4A098324")
+                    }
+                };
+
 
             builder.Entity<Subject>().HasData(seedSubjects);
             builder.Entity<Course>().HasData(seedCourses);
+            builder.Entity<Module>().HasData(seedModules);
 
         }
 
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Module> Modules { get; set; }
 
         public override int SaveChanges()
         {
