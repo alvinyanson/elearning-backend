@@ -10,5 +10,6 @@ namespace ELearning_API.Data.Repositories.Interfaces
     {
         PaginatedResult<GetModuleDTO> GetPaginated(int page, int pageSize, Expression<Func<Module, bool>> condition);
 
+        Task<Module> GetByName(string name);
     }
 }

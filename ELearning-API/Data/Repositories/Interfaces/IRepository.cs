@@ -15,6 +15,5 @@ namespace ELearning_API.Data.Repositories.Interfaces
         Task<bool> Update(T entity);
         
         Task<bool> Delete(Guid id);
-
     }
 }

@@ -4,8 +4,6 @@ namespace ELearning_API.DTOs.Module
 {
     public class BaseModuleDTO
     {
-        public Guid Id { get; set; }
-
         public string Title { get; set; }
         public TimeSpan Duration { get; set; }
         public bool IsPublished { get; set; }

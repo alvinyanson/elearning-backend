@@ -48,5 +48,56 @@ namespace ELearning_API.Data.Repositories
                 PageCount = (int)Math.Ceiling(count / (double)pageSize)
             };
         }
+
+        public override async Task<bool> Delete(Guid id)
+        {
+            Module? module = await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (module == null)
+                return false;
+
+            _dbSet.Remove(module);
+
+            return true;
+        }
+
+        public override async Task<bool> Update(Module request)
+        {
+            Module? module = await _dbSet.FirstOrDefaultAsync(x => x.Id == request.Id);
+
+            if (module == null)
+                return false;
+
+            module.Title = request.Title;
+            module.Duration = request.Duration;
+            module.IsPublished = request.IsPublished;
+            module.CourseId = request.CourseId;
+            module.AuthorId = request.AuthorId;
+
+            return true;
+        }
+
+        public async Task<Module?> GetByName(string name)
+        {
+            Module? module = await _context.Modules.FirstOrDefaultAsync(x => x.Title.ToUpper() == name.ToUpper());
+
+            if (module == null)
+                return null;
+
+            return module;
+        }
+
+        public override async Task<Module?> GetById(Guid id)
+        {
+            Module? module = await _context.Modules
+                .Include(c => c.Course)
+                .Include(c => c.Author)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if(module == null) 
+                return null;
+
+            return module;
+        }
     }
 }
