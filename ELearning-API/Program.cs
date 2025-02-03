@@ -114,7 +114,7 @@ try
 catch(Exception ex)
 {
     // NLog: catch any exception and log it.
-    logger.Error(ex, "Stopped program because of exception");
+    //logger.Error(ex, "Stopped program because of exception");
     throw;
 }
 finally

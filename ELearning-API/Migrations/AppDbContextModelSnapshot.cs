@@ -289,7 +289,7 @@ namespace ELearning_API.Migrations
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
@@ -312,6 +312,8 @@ namespace ELearning_API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.HasIndex("CourseId");
 
                     b.ToTable("Modules");
@@ -319,7 +321,7 @@ namespace ELearning_API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f5b979d5-11a3-4ad2-af7f-1d215efb5a0e"),
+                            Id = new Guid("54d33185-0e39-45f4-8f05-37fc100d29ea"),
                             AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -330,7 +332,7 @@ namespace ELearning_API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8815cfcc-3b07-40be-a29f-d216f821ae2b"),
+                            Id = new Guid("4b146c3b-9cb1-4c0f-b07f-fccba7b6effc"),
                             AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -341,7 +343,7 @@ namespace ELearning_API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cf116480-7bab-4748-85eb-63244ac43ef0"),
+                            Id = new Guid("42f831f1-8641-451e-878e-c786182036e1"),
                             AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -352,7 +354,7 @@ namespace ELearning_API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5d16034a-8cfa-4297-909f-a1684b5bcd94"),
+                            Id = new Guid("3f7654fe-0ad8-4289-9436-04ce9005f500"),
                             AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -363,7 +365,7 @@ namespace ELearning_API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fbccea49-acce-4c2e-b3f9-d013c64cff7d"),
+                            Id = new Guid("4467cacb-2fbd-4928-b5ce-f4028f8068d8"),
                             AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
                             CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -746,11 +748,19 @@ namespace ELearning_API.Migrations
 
             modelBuilder.Entity("ELearning_API.Models.Module", b =>
                 {
+                    b.HasOne("ELearning_API.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("ELearning_API.Models.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
 
                     b.Navigation("Course");
                 });

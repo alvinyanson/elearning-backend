@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ELearning_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250122070721_CourseTable")]
-    partial class CourseTable
+    [Migration("20250203064347_CoursesAndModulesTable")]
+    partial class CoursesAndModulesTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,6 +281,101 @@ namespace ELearning_API.Migrations
                             SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"),
                             Title = "Ruby",
                             UpdatedAt = new DateTime(2024, 12, 21, 10, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("ELearning_API.Models.Module", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Modules");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("54d33185-0e39-45f4-8f05-37fc100d29ea"),
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                            CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 2, 0, 0, 0),
+                            IsPublished = true,
+                            Title = "Introduction to Programming",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("4b146c3b-9cb1-4c0f-b07f-fccba7b6effc"),
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                            CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 3, 30, 0, 0),
+                            IsPublished = false,
+                            Title = "Advanced C# Techniques",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("42f831f1-8641-451e-878e-c786182036e1"),
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                            CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 2, 30, 0, 0),
+                            IsPublished = true,
+                            Title = "Database Design Principles",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("3f7654fe-0ad8-4289-9436-04ce9005f500"),
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                            CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 1, 30, 0, 0),
+                            IsPublished = false,
+                            Title = "Web Development Basics",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("4467cacb-2fbd-4928-b5ce-f4028f8068d8"),
+                            AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                            CourseId = new Guid("01403752-9f62-4639-a411-109f4a098324"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Duration = new TimeSpan(0, 4, 0, 0, 0),
+                            IsPublished = true,
+                            Title = "Machine Learning Essentials",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -644,7 +739,7 @@ namespace ELearning_API.Migrations
                         .IsRequired();
 
                     b.HasOne("ELearning_API.Models.Subject", "Subject")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -652,6 +747,25 @@ namespace ELearning_API.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("ELearning_API.Models.Module", b =>
+                {
+                    b.HasOne("ELearning_API.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ELearning_API.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -703,6 +817,11 @@ namespace ELearning_API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ELearning_API.Models.Subject", b =>
+                {
+                    b.Navigation("Courses");
                 });
 #pragma warning restore 612, 618
         }

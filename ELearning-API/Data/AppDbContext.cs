@@ -1,6 +1,7 @@
 ﻿using ELearning_API.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace ELearning_API.Data
 {
@@ -14,6 +15,13 @@ namespace ELearning_API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Module>()
+            .HasOne(m => m.Author)
+            .WithMany()
+            .HasForeignKey(m => m.AuthorId)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
             Subject[] seedSubjects = [
                 new() { Id = new Guid("c924fda8-abe9-4909-8e1d-616df8f4d231"), Name = "Introduction to Programming", OwnerId = new Guid("81213a50-758e-4904-b715-640038ee9cd9"), CreatedAt = new DateTime(2024, 12, 1, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 1, 10, 0, 0) },

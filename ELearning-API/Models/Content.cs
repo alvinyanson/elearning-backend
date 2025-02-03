@@ -2,22 +2,21 @@
 
 namespace ELearning_API.Models
 {
-    public class Module : BaseEntity
+    public class Content : BaseEntity
     {
-        public string Title { get; set; }
-        public TimeSpan Duration { get; set; }
+        public string HTMLContent { get; set; }
+        public string Type { get; set; }
         public bool IsPublished { get; set; }
-        
-        [ForeignKey("Course")]
-        public Guid CourseId { get; set; }
-
-        // navigation property
-        public virtual Course Course { get; set; }
 
         [ForeignKey("ApplicationUser")]
         public string AuthorId { get; set; }
 
         public virtual ApplicationUser Author { get; set; }
+
+        [ForeignKey("Module")]
+        public Guid ModuleId { get; set; }
+
+        public virtual Module Module { get; set; }
 
     }
 }
