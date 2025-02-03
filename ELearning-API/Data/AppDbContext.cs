@@ -22,6 +22,12 @@ namespace ELearning_API.Data
             .HasForeignKey(m => m.AuthorId)
             .OnDelete(DeleteBehavior.NoAction);
 
+            builder.Entity<Content>()
+            .HasOne(m => m.Module)
+            .WithMany()
+            .HasForeignKey(m => m.ModuleId)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
             Subject[] seedSubjects = [
                 new() { Id = new Guid("c924fda8-abe9-4909-8e1d-616df8f4d231"), Name = "Introduction to Programming", OwnerId = new Guid("81213a50-758e-4904-b715-640038ee9cd9"), CreatedAt = new DateTime(2024, 12, 1, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 1, 10, 0, 0) },
@@ -47,7 +53,6 @@ namespace ELearning_API.Data
                 new() { Id = new Guid("972c9cb1-86ad-4a03-96ec-687dff0c8173"), Name = "Cybersecurity Basics", OwnerId = new Guid("81213a50-758e-4904-b715-640038ee9cd9"), CreatedAt = new DateTime(2024, 12, 21, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 21, 10, 0, 0) },
                 ];
 
-
             Course[] seedCourses =
                 {
                     new Course {Id = new Guid("01403752-9f62-4639-a411-109f4a098324"), Title = "Angular", Icon = "angular", IsPublished = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "81213A50-758E-4904-B715-640038EE9CD9", CreatedAt = new DateTime(2024, 12, 12, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 12, 10, 0, 0), Duration = TimeSpan.Zero, ModuleCount = 0 },
@@ -62,11 +67,11 @@ namespace ELearning_API.Data
                     new Course {Id = new Guid("91403752-9f62-4639-a411-109f4a098324"), Title = "Ruby", Icon = "ruby", IsPublished = false, SubjectId = new Guid("3f7ecbfa-4c9f-42b7-89fc-dfe7baf7959e"), AuthorId = "81213A50-758E-4904-B715-640038EE9CD9", CreatedAt = new DateTime(2024, 12, 21, 10, 0, 0), UpdatedAt = new DateTime(2024, 12, 21, 10, 0, 0), Duration = TimeSpan.Zero, ModuleCount = 0 },
                 };
 
-
             Module[] seedModules =
                 {
                     new Module
                     {
+                        Id = new Guid("54D33185-0E39-45F4-8F05-37FC100D29EA"),
                         Title = "Introduction to Programming",
                         Duration = TimeSpan.FromHours(2),
                         IsPublished = true,
@@ -75,6 +80,7 @@ namespace ELearning_API.Data
                     },
                     new Module
                     {
+                        Id = new Guid("4B146C3B-9CB1-4C0F-B07F-FCCBA7B6EFFC"),
                         Title = "Advanced C# Techniques",
                         Duration = TimeSpan.FromHours(3.5),
                         IsPublished = false,
@@ -83,6 +89,7 @@ namespace ELearning_API.Data
                     },
                     new Module
                     {
+                        Id = new Guid("42F831F1-8641-451E-878E-C786182036E1"),
                         Title = "Database Design Principles",
                         Duration = TimeSpan.FromHours(2.5),
                         IsPublished = true,
@@ -91,6 +98,7 @@ namespace ELearning_API.Data
                     },
                     new Module
                     {
+                        Id = new Guid("3F7654FE-0AD8-4289-9436-04CE9005F500"),
                         Title = "Web Development Basics",
                         Duration = TimeSpan.FromHours(1.5),
                         IsPublished = false,
@@ -99,6 +107,7 @@ namespace ELearning_API.Data
                     },
                     new Module
                     {
+                        Id = new Guid("4467CACB-2FBD-4928-B5CE-F4028F8068D8"),
                         Title = "Machine Learning Essentials",
                         Duration = TimeSpan.FromHours(4),
                         IsPublished = true,
@@ -107,16 +116,32 @@ namespace ELearning_API.Data
                     }
                 };
 
+            Content[] seedContents = [
+                 new Content
+                    {
+                        HTMLContent = "<p>Introduction to the course</p>",
+                        Type = "Text",
+                        IsPublished = true,
+                        AuthorId = "81213A50-758E-4904-B715-640038EE9CD9",
+                        ModuleId = new Guid("3F7654FE-0AD8-4289-9436-04CE9005F500"),
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    },
+                ];
+
 
             builder.Entity<Subject>().HasData(seedSubjects);
             builder.Entity<Course>().HasData(seedCourses);
             builder.Entity<Module>().HasData(seedModules);
+            builder.Entity<Content>().HasData(seedContents);
 
         }
 
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Module> Modules { get; set; }
+        public DbSet<Content> Contents { get; set; }
+
 
         public override int SaveChanges()
         {
