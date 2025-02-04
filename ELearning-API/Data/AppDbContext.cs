@@ -24,7 +24,7 @@ namespace ELearning_API.Data
 
             builder.Entity<Content>()
             .HasOne(m => m.Module)
-            .WithMany()
+            .WithMany(m => m.Content)
             .HasForeignKey(m => m.ModuleId)
             .OnDelete(DeleteBehavior.NoAction);
 

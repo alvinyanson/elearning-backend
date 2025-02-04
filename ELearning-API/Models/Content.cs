@@ -13,7 +13,6 @@ namespace ELearning_API.Models
 
         public virtual ApplicationUser Author { get; set; }
 
-        [ForeignKey("Module")]
         public Guid ModuleId { get; set; }
 
         public virtual Module Module { get; set; }

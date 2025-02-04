@@ -2,6 +2,6 @@
 {
     public class CreateModuleDTO : BaseModuleDTO
     {
-
+        public List<CreateContentDTO> Content { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using ELearning_API.Models;
 using ELearning_API.Models.Base;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -21,8 +22,15 @@ namespace ELearning_API.Data.Repositories
 
         public override async Task<bool> Add(Module request)
         {
-            await _dbSet.AddAsync(request);
-             
+            EntityEntry<Module> result = await _context.Modules.AddAsync(request);
+
+            foreach (var content in request.Content)
+            {
+                content.ModuleId = result.Entity.Id;
+            }
+
+            await _context.Contents.AddRangeAsync(request.Content.AsEnumerable());
+
             return true;
         }
 

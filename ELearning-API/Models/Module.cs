@@ -19,5 +19,6 @@ namespace ELearning_API.Models
 
         public virtual ApplicationUser Author { get; set; }
 
+        public virtual List<Content> Content { get; set; }
     }
 }
